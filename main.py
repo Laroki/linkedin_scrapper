@@ -1,6 +1,6 @@
 from peopleScrapper import PeopleScrapper
 
-data = [
+filters = [
     {
         'companies': ['eiffage'],
         'keywords': ['technicien', 'responsable achat'],
@@ -15,4 +15,4 @@ data = [
     }
 ]
 
-scrapper = PeopleScrapper(data)
+scrapper = PeopleScrapper(filters)

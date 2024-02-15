@@ -18,28 +18,22 @@ class PeopleScrapper:
     driver.maximize_window()
     timeout = 10
 
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, filters):
+        self.filters = filters
         self.driver.get("https://www.linkedin.com/")
-        self._loggin()
-        self.driver.implicitly_wait(5)
-        self._searchPeople()
-
-    def _loggin(self):
         self.driver.add_cookie({"name":"li_at","value": LI_AT})
-        self.driver.get("https://www.linkedin.com/search/results/people/?keywords=remi+cakir&origin=GLOBAL_SEARCH_HEADER")
+        self.driver.implicitly_wait(5)
+        self._setFilters()
 
-    def _searchPeople(self):
-        for data in self.data:
-            self._setLocations(data['locations'])
-            self.driver.implicitly_wait(10)
-            self._setCompanies(data['companies'])
-            self.driver.implicitly_wait(10)
-            self._setKeywords(data['keywords'])
-            self.driver.get("https://www.linkedin.com/search/results/people/?keywords=remi+cakir&origin=GLOBAL_SEARCH_HEADER")
+    def _setFilters(self):
+        for filters in self.filters:
+            self.driver.get("https://www.linkedin.com/search/results/people/?keywords=&origin=GLOBAL_SEARCH_HEADER")
+            self._setLocations(filters['locations'])
+            self._setCompanies(filters['companies'])
+            self._setKeywords(filters['keywords'])
             
     def _setKeywords(self, keywords):
-
+        self.driver.implicitly_wait(10)
         for keyword in keywords:
             searchBox = self._findElementByCLASS("search-global-typeahead__input")
             searchBox.clear()
@@ -83,6 +77,7 @@ class PeopleScrapper:
         self.driver.switch_to.active_element.send_keys(Keys.ESCAPE)
 
     def _setCompanies(self, companies):
+        self.driver.implicitly_wait(10)
         companiesBtn = self._findElementByID('searchFilter_currentCompany')
         self.driver.implicitly_wait(1)
         companiesBtn.click()
