@@ -30,17 +30,18 @@ class PeopleScrapper:
         self.driver.get("https://www.linkedin.com/search/results/people/?keywords=remi+cakir&origin=GLOBAL_SEARCH_HEADER")
 
     def _searchPeople(self):
-        self._setLocations(self.data[0]['locations'])
-        self.driver.implicitly_wait(10)
-        self._setCompanies(self.data[0]['companies'])
-        self.driver.implicitly_wait(10)
-        self._setKeywords(self.data[0]['keywords'])
-
+        for data in self.data:
+            self._setLocations(data['locations'])
+            self.driver.implicitly_wait(10)
+            self._setCompanies(data['companies'])
+            self.driver.implicitly_wait(10)
+            self._setKeywords(data['keywords'])
+            self.driver.get("https://www.linkedin.com/search/results/people/?keywords=remi+cakir&origin=GLOBAL_SEARCH_HEADER")
+            
     def _setKeywords(self, keywords):
-        searchBox = self._findElementByCLASS("search-global-typeahead__input")
-        searchBox.send_keys()
 
         for keyword in keywords:
+            searchBox = self._findElementByCLASS("search-global-typeahead__input")
             searchBox.clear()
             time.sleep(1)
             self.driver.implicitly_wait(1)
