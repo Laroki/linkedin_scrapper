@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 from dotenv import load_dotenv
 import time
-from gatherer import Gatherer
+from navigator import Navigator
 
 load_dotenv()
 LI_AT = os.getenv('LI_AT')
@@ -52,8 +52,8 @@ class PeopleScrapper:
             time.sleep(1)
             self.driver.implicitly_wait(1)
             searchBox.clear()
-            # EXEC GATHERER
-            Gatherer(self.driver)
+            # EXEC NAVIGATION
+            Navigator(self.driver)
 
     def _setLocations(self, locations):
         locationBtn = self._findElementByID('searchFilter_geoUrn')

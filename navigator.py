@@ -7,7 +7,7 @@ from selenium.webdriver.remote.webelement import WebElement
 import time
 
 
-class Gatherer:
+class Navigator:
     timeout = 5
     maxPageValue = 0
     peopleListToScrap: list[str] = []
