@@ -148,6 +148,3 @@ class PeopleScrapper:
             return self.driver.find_element(by=By.TAG_NAME, value=tagName)
         except TimeoutException:
             print("Timed out waiting for element")
-        
-        
-        

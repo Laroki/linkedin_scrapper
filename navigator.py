@@ -18,7 +18,7 @@ class Navigator:
         self._setMaxPageValue()
 
         if self.maxPageValue > 0:
-            self._scrapPaginatedPofileURL()
+            self._paginateAndStoreProfile()
 
         # HANDLE IF NO PAGINATION
             # CHECK IF PEOPLE ELEMENT PRESENT
@@ -35,7 +35,7 @@ class Navigator:
         except TimeoutException:
             print("No pagination")
 
-    def _scrapPaginatedPofileURL(self):
+    def _paginateAndStoreProfile(self):
         for index in range(1, self.maxPageValue + 1):
             print('current page: ' + str(index))
             if index != 1:
@@ -65,7 +65,3 @@ class Navigator:
     def _scrollToBottom(self):
         time.sleep(2)
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-
-
-
-        
