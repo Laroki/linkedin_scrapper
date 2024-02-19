@@ -1,4 +1,4 @@
-from peopleScrapper import PeopleScrapper
+from scrapper import Scrapper
 
 # filters = [
 #     {
@@ -24,4 +24,4 @@ filters = [
     }
 ]
 
-scrapper = PeopleScrapper(filters)
+scrapper = Scrapper(filters)

@@ -12,7 +12,7 @@ from navigator import Navigator
 load_dotenv()
 LI_AT = os.getenv('LI_AT')
 
-class PeopleScrapper:
+class Scrapper:
     options = webdriver.FirefoxOptions()
     driver = webdriver.Firefox()
     driver.maximize_window()
@@ -103,14 +103,6 @@ class PeopleScrapper:
         companiesSearchBox.send_keys(Keys.TAB)
         self.driver.implicitly_wait(1)
         self.driver.switch_to.active_element.send_keys(Keys.ESCAPE)
-
-    def _findFilters(self, cssSelector):
-        try:
-            element_present = EC.presence_of_element_located((By.CSS_SELECTOR, cssSelector))
-            WebDriverWait(self.driver, self.timeout).until(element_present)
-            return self.driver.find_elements(by=By.CSS_SELECTOR, value=cssSelector)
-        except TimeoutException:
-            print("Timed out waiting for element")
 
     def _findElementByID(self, id):
         try:
