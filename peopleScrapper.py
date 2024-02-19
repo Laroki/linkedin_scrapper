@@ -30,11 +30,11 @@ class PeopleScrapper:
             self.driver.get("https://www.linkedin.com/search/results/people/?keywords=&origin=GLOBAL_SEARCH_HEADER")
             self._setLocations(filters['locations'])
             self._setCompanies(filters['companies'])
-            self._setKeywords(filters['keywords'])
+            self._setKeywords(filters)
             
-    def _setKeywords(self, keywords):
+    def _setKeywords(self, filters):
         self.driver.implicitly_wait(10)
-        for keyword in keywords:
+        for keyword in filters['keywords']:
             searchBox = self._findElementByCLASS("search-global-typeahead__input")
             searchBox.clear()
             time.sleep(1)
@@ -47,7 +47,7 @@ class PeopleScrapper:
             self.driver.implicitly_wait(1)
             searchBox.clear()
             # EXEC NAVIGATION
-            Navigator(self.driver)
+            Navigator(self.driver, {"locations": filters['locations'], "companies": filters['companies'], "keyword": keyword})
 
     def _setLocations(self, locations):
         locationBtn = self._findElementByID('searchFilter_geoUrn')

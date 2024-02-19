@@ -6,14 +6,14 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 import time
 
-
 class Navigator:
     timeout = 5
     maxPageValue = 0
     peopleListToScrap: list[str] = []
 
-    def __init__(self, driver: webdriver.Firefox):
+    def __init__(self, driver: webdriver.Firefox, activeFilters):
         self.driver = driver
+        self.activeFilters = activeFilters
         self._scrollToBottom()
         self._setMaxPageValue()
 
@@ -37,6 +37,7 @@ class Navigator:
 
     def _paginateAndStoreProfile(self):
         for index in range(1, self.maxPageValue + 1):
+            print(self.activeFilters)
             print('current page: ' + str(index))
             if index != 1:
                 # Navigate to URL
