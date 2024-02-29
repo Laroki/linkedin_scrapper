@@ -5,9 +5,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 import time
+from profileScrapper import ProfileScrapper
 
 class Navigator:
-    timeout = 5
+    timeout = 2
     maxPageValue = 0
     peopleListToScrap: list[str] = []
 
@@ -19,11 +20,12 @@ class Navigator:
 
         if self.maxPageValue > 0:
             self._paginateAndStoreProfile()
+        else:
+            self._storeProfiles()
 
-        # HANDLE IF NO PAGINATION
-            # CHECK IF PEOPLE ELEMENT PRESENT
-            # IF NOT => NO RESULT FOR SEARCH
-
+        #scrap profiles
+        ProfileScrapper(self.peopleListToScrap)
+        
     def _setMaxPageValue(self):
         try:
             element_present = EC.presence_of_element_located((By.CSS_SELECTOR, ".artdeco-pagination__pages"))
@@ -57,11 +59,14 @@ class Navigator:
 
     def _storeProfiles(self):
         peopleList = self._findByCSSSelector("ul.reusable-search__entity-result-list li div span.entity-result__title-line a")
-        for people in peopleList:
-            link = people.get_attribute("href")
-            if "/in/" in link:
-                print(link)
-                self.peopleListToScrap += link
+        if peopleList is not None:
+            for people in peopleList:
+                link = people.get_attribute("href")
+                if "/in/" in link:
+                    print(link)
+                    self.peopleListToScrap.append(link)
+        else:
+            print('NO PROFILES ON CURRENT PAGE')
 
     def _scrollToBottom(self):
         time.sleep(2)
