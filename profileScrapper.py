@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.common.exceptions import NoSuchElementException
 import time
 import csv
 import os
@@ -37,6 +38,8 @@ class ProfileScrapper:
             self.profile = {}
 
         self._listToCSV(self.profiles)
+        self.profile = {}
+        self.profiles = []
         print('EXIT')
 
     def _setFullName(self):
@@ -44,8 +47,18 @@ class ProfileScrapper:
     
     def _setCurrentJob(self):
         experienceSection: WebElement = self._findByCSSSelector('div#experience').parent
-        self.profile['job'] = experienceSection.find_element(by=By.CSS_SELECTOR, value='div.pvs-list__outer-container > ul.pvs-list > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)').text
-        self.profile['company'] = experienceSection.find_element(by=By.CSS_SELECTOR, value='div.pvs-list__outer-container > ul.pvs-list > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)').text
+
+        try:
+            element = experienceSection.find_element(by=By.CSS_SELECTOR, value='div.pvs-list__outer-container > ul.pvs-list > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)')
+            self.profile['job'] = element.text
+        except NoSuchElementException:
+            self.profile['job'] = 'N/A'
+
+        try:
+            element = experienceSection.find_element(by=By.CSS_SELECTOR, value='div.pvs-list__outer-container > ul.pvs-list > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)')
+            self.profile['company'] = element.text
+        except NoSuchElementException:
+            self.profile['company'] = 'N/A'
 
     def _findByCSSSelector(self, cssSelector):
         try:
@@ -62,5 +75,5 @@ class ProfileScrapper:
     def _listToCSV(self, list):
         with open('dataset.csv', 'a', encoding='utf8', newline='') as output_file:
             fc = csv.DictWriter(output_file, fieldnames=list[0].keys())
-            fc.writeheader()
+            # fc.writeheader()
             fc.writerows(list)

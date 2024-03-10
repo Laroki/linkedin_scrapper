@@ -17,6 +17,7 @@ class Navigator:
         self.activeFilters = activeFilters
         self._scrollToBottom()
         self._setMaxPageValue()
+        self.peopleListToScrap = []
 
         if self.maxPageValue > 0:
             self._paginateAndStoreProfile()
